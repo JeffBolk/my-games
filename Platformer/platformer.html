@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Unity Web Player | FinalProject-2DPlatformer</title>
+  <link rel="shortcut icon" href="TemplateData/favicon.ico">
+  <link rel="stylesheet" href="TemplateData/style.css">
+  <style>
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: radial-gradient(circle at 15% 20%, #111827 0%, #020617 45%, #000308 100%);
+      color: #f8fafc;
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .page-shell {
+      width: min(98vw, 980px);
+    }
+
+    .top-nav {
+      margin: 12px auto 6px;
+      width: min(980px, 98vw);
+      background: rgba(12, 18, 40, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 8px;
+    }
+
+    .top-nav summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    .top-nav a {
+      margin: 2px 4px 2px 0;
+      display: inline-block;
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+      border-radius: 7px;
+      text-decoration: none;
+      padding: 6px 10px;
+      font-size: .85rem;
+    }
+
+    .top-nav a:hover {
+      background: #0ea5e9;
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    #unity-container {
+      width: min(980px, calc(100vw - 24px));
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    #unity-footer {
+      background: rgba(0, 0, 0, 0.6);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-shell">
+
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">FinalProject-2DPlatformer</div>
+      </div>
+    </div>
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function () {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/Platformer.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/Platformer.data",
+        frameworkUrl: buildUrl + "/Platformer.framework.js",
+        codeUrl: buildUrl + "/Platformer.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "FinalProject-2DPlatformer",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+
+
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
+
+      document.querySelector("#unity-loading-bar").style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          document.querySelector("#unity-loading-bar").style.display = "none";
+          document.querySelector("#unity-fullscreen-button").onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+
+      document.body.appendChild(script);
+
+    </script>
+  </div>
+</body>
+
+</html>
