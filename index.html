@@ -100,18 +100,148 @@
             background: #0ea5e9;
             color: #fff;
         }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, #0f1727 0%, #0b1222 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .navbar-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .navbar-btn {
+            background: rgba(15, 23, 42, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 7px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+            transition: all .2s ease;
+        }
+
+        .navbar-btn:hover {
+            background: #0ea5e9;
+            color: #fff;
+            border-color: #0ea5e9;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            background: rgba(15, 23, 42, 0.8);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 7px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all .2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dropdown-toggle:hover {
+            background: #0ea5e9;
+            color: #fff;
+            border-color: #0ea5e9;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            min-width: 180px;
+            list-style: none;
+            margin: 8px 0 0 0;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all .2s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu li {
+            margin: 0;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 14px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all .2s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: #0ea5e9;
+            color: #fff;
+        }
+
+        body {
+            padding-top: 60px;
+        }
     </style>
 </head>
 
 <body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="index.html" class="navbar-btn">🏠 Home</a>
+            <button class="navbar-btn" onclick="location.reload()">🔄 Reload</button>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-toggle">🎮 Games ▼</button>
+            <ul class="dropdown-menu">
+                <li><a href="Frogger/frogger.html">Frogger</a></li>
+                <li><a href="FlappyBird/flappybird.html">Flappy Bird</a></li>
+                <li><a href="CaptainBlaster/captainblaster.html">Captain Blaster</a></li>
+                <li><a href="Platformer/platformer.html">Platformer</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
         <h1>My Games</h1>
         <p>Welcome! Pick one of the games below to launch it.</p>
         <div class="nav">
-            <a href="../Frogger/frogger.html"><button>Play Frogger</button></a>
-            <a href="../FlappyBird/flappybird.html"><button>Play Flappy Bird</button></a>
-            <a href="../CaptainBlaster/captainblaster.html"><button>Play Captain Blaster</button></a>
-            <a href="../Platformer/platformer.html"><button>Play Platformer</button></a>
+            <a href="my-games/Frogger/frogger.html"><button>Play Frogger</button></a>
+            <a href="my-games/FlappyBird/flappybird.html"><button>Play Flappy Bird</button></a>
+            <a href="my-games/CaptainBlaster/captainblaster.html"><button>Play Captain Blaster</button></a>
+            <a href="my-games/Platformer/platformer.html"><button>Play Platformer</button></a>
         </div>
     </div>
 </body>
